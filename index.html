@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>7-11 Mockup — Product Filter & Checkout</title>
 
+  <!-- สำคัญ: ให้ลิงก์สัมพัทธ์ทั้งหมดอิงจากไฟล์นี้ -->
+  <base href="./">
+
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -130,20 +133,20 @@
           <h1 class="mb-3">7-11 Mockup — <span class="text-success">Product Filter & Checkout</span></h1>
           <p class="text-muted mb-4">ต้นแบบทำงานได้จริง (เพื่อการศึกษา) จากโจทย์วิชา — ค้นหา/ฟิลเตอร์/ตะกร้า/เช็คเอาต์ พร้อมเชื่อมต่อ API หรือระบบหลังบ้านได้ในขั้นต่อไป</p>
           <div class="d-flex gap-2">
-           <a class="btn btn-brand btn-lg" href="demo/index.html">
+            <a class="btn btn-brand btn-lg" href="demo/index.html">
               <i class="bi bi-play-circle me-2"></i>ทดลองการทำงานจริง
             </a>
           </div>
         </div>
 
         <div class="col-lg-5 d-none d-lg-flex justify-content-end">
-          <img src="/demo/assets/images/brand/7-11-logo.png" alt="7-Eleven Logo" class="img-fluid"
+          <img src="demo/assets/images/brand/7-11-logo.png" alt="7-Eleven Logo" class="img-fluid"
                style="max-width:160px; filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));">
         </div>
       </div>
 
       <div class="d-lg-none text-center mt-4">
-        <img src="../demo/assets/images/brand/7-11-logo.png" alt="7-Eleven Logo"
+        <img src="demo/assets/images/brand/7-11-logo.png" alt="7-Eleven Logo"
              style="max-width:96px; filter:drop-shadow(0 6px 12px rgba(0,0,0,.35));">
       </div>
     </div>
@@ -228,7 +231,7 @@
         <!-- Nattawat -->
         <div class="card rounded-4 p-3 team-card hoverable reveal">
           <div class="media-wrap mb-2">
-            <img class="w-100" alt="Nattawat" src="/demo/assets/images/team/nattawat.jpg">
+            <img class="w-100" alt="Nattawat" src="demo/assets/images/team/nattawat.jpg">
             <a class="gh-chip" href="https://github.com/luioluil" target="_blank" rel="noopener"
                aria-label="Open Nattawat's GitHub"><i class="bi bi-github" aria-hidden="true"></i></a>
           </div>
@@ -240,7 +243,7 @@
         <!-- Kongpop -->
         <div class="card rounded-4 p-3 team-card hoverable reveal">
           <div class="media-wrap mb-2">
-            <img class="w-100" alt="Kongpop Suksap" src="/demo/assets/images/team/team-friend-a.jpg">
+            <img class="w-100" alt="Kongpop Suksap" src="demo/assets/images/team/team-friend-a.jpg">
             <a class="gh-chip" href="https://github.com/kongpop2238/" target="_blank" rel="noopener"
                aria-label="Open Kongpop's GitHub" title="เติมลิงก์ GitHub ของ Kongpop"><i class="bi bi-github"></i></a>
           </div>
@@ -252,7 +255,7 @@
         <!-- Sanucha -->
         <div class="card rounded-4 p-3 team-card hoverable reveal">
           <div class="media-wrap mb-2">
-            <img class="w-100" alt="Sanucha Sondech" src="/demo/assets/images/team/team-friend-b.jpg">
+            <img class="w-100" alt="Sanucha Sondech" src="demo/assets/images/team/team-friend-b.jpg">
             <a class="gh-chip" href="https://github.com/SanuchaSondech" target="_blank" rel="noopener"
                aria-label="Open Sanucha's GitHub" title="เติมลิงก์ GitHub ของ Sanucha"><i class="bi bi-github"></i></a>
           </div>
@@ -264,7 +267,7 @@
         <!-- Thanachaporn -->
         <div class="card rounded-4 p-3 team-card hoverable reveal">
           <div class="media-wrap mb-2">
-            <img class="w-100" alt="Thanachaporn Chuaynak" src="/demo/assets/images/team/team-friend-c.jpg">
+            <img class="w-100" alt="Thanachaporn Chuaynak" src="demo/assets/images/team/team-friend-c.jpg">
             <a class="gh-chip" href="https://github.com/thanachapornchuaynak" target="_blank" rel="noopener"
                aria-label="Open Thanachaporn's GitHub" title="เติมลิงก์ GitHub ของ Thanachaporn"><i class="bi bi-github"></i></a>
           </div>
@@ -276,7 +279,7 @@
         <!-- Kasidate -->
         <div class="card rounded-4 p-3 team-card hoverable reveal">
           <div class="media-wrap mb-2">
-            <img class="w-100" alt="Kasidate Kookid" src="/demo/assets/images/team/team-friend-d.jpg">
+            <img class="w-100" alt="Kasidate Kookid" src="demo/assets/images/team/team-friend-d.jpg">
             <a class="gh-chip" href="https://github.com/kasidate-kookid" target="_blank" rel="noopener"
                aria-label="Open Kasidate's GitHub" title="เติมลิงก์ GitHub ของ Kasidate"><i class="bi bi-github"></i></a>
           </div>
@@ -288,7 +291,7 @@
         <!-- Anut -->
         <div class="card rounded-4 p-3 team-card hoverable reveal">
           <div class="media-wrap mb-2">
-            <img class="w-100" alt="Anut Hlikia" src="/demo/assets/images/team/team-friend-e.jpg">
+            <img class="w-100" alt="Anut Hlikia" src="demo/assets/images/team/team-friend-e.jpg">
             <a class="gh-chip" href="https://github.com/AnutTonkla/" target="_blank" rel="noopener"
                aria-label="Open Anut's GitHub" title="เติมลิงก์ GitHub ของ Anut"><i class="bi bi-github"></i></a>
           </div>
@@ -338,7 +341,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../demo/assets/images/team/nattawat.jpg" class="rounded-4 w-100 mb-3" alt="Nattawat Aumyat">
+          <img src="demo/assets/images/team/nattawat.jpg" class="rounded-4 w-100 mb-3" alt="Nattawat Aumyat">
           <p>ดูแลการออกแบบและพัฒนาเว็บของทีม ตั้งแต่การวางโครงสร้าง UX/UI ไปจนถึงการพัฒนา Prototype เพื่อใช้ในการนำเสนอจริง มีบทบาทในการเชื่อมต่อแนวคิดจากทุกฝ่ายให้กลายเป็นรูปแบบที่ใช้งานได้จริง สื่อสารไอเดียของทีมออกมาอย่างชัดเจนและเป็นระบบ</p>
         </div>
       </div>
@@ -353,7 +356,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../demo/assets/images/team/team-friend-a.jpg" class="rounded-4 w-100 mb-3" alt="Kongpop Suksap">
+          <img src="demo/assets/images/team/team-friend-a.jpg" class="rounded-4 w-100 mb-3" alt="Kongpop Suksap">
           <p>ผู้ออกแบบประสบการณ์ผู้ใช้และโครงสร้างอินเทอร์เฟซที่สะท้อนแนวคิดของโปรเจกต์ให้เข้าใจง่าย เป็นผู้สร้างสมดุลระหว่างความสวยงามกับการใช้งานจริง ช่วยให้ภาพรวมของผลิตภัณฑ์มีทั้งอัตลักษณ์และความเป็นมืออาชีพ</p>
         </div>
       </div>
@@ -365,10 +368,10 @@
       <div class="modal-content" style="background:#0b1220; color:#e5f2ff">
         <div class="modal-header border-0">
           <h5 class="modal-title">Sanucha Sondech — Project Strategist & System Planner</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../demo/assets/images/team/team-friend-b.jpg" class="rounded-4 w-100 mb-3" alt="Sanucha Sondech">
+          <img src="demo/assets/images/team/team-friend-b.jpg" class="rounded-4 w-100 mb-3" alt="Sanucha Sondech">
           <p>ผู้วางแผนและขับเคลื่อนการดำเนินงานของทีม ตั้งแต่การจัดลำดับงาน วางโครงเรื่อง จนถึงการออกแบบแนวทางนำเสนอให้สอดคล้องกับเป้าหมายโครงงาน มีทักษะด้านการจัดการและความเข้าใจเชิงเทคนิคที่ช่วยให้ทุกส่วนทำงานได้อย่างราบรื่นและเป็นระบบ</p>
         </div>
       </div>
@@ -383,7 +386,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../demo/assets/images/team/team-friend-c.jpg" class="rounded-4 w-100 mb-3" alt="Thanachaporn Chuaynak">
+          <img src="demo/assets/images/team/team-friend-c.jpg" class="rounded-4 w-100 mb-3" alt="Thanachaporn Chuaynak">
           <p>ผู้ดูแลระบบฝั่งหลังบ้านและจัดการโครงสร้างข้อมูลให้รองรับการทำงานของเว็บได้เต็มประสิทธิภาพ คอยสนับสนุนทุกฝ่ายในเชิงเทคนิคและช่วยเชื่อมต่อองค์ประกอบทั้งหมดให้สมบูรณ์ในระดับระบบจริง</p>
         </div>
       </div>
@@ -398,7 +401,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../demo/assets/images/team/team-friend-d.jpg" class="rounded-4 w-100 mb-3" alt="Kasidate Kookid">
+          <img src="demo/assets/images/team/team-friend-d.jpg" class="rounded-4 w-100 mb-3" alt="Kasidate Kookid">
           <p>ผู้วิเคราะห์ข้อมูลและค้นหา insight ที่ทำให้ทีมเข้าใจปัญหาของผู้ใช้จริง เป็นผู้นำด้านการวิจัยและตรวจสอบคุณภาพระบบ เพื่อให้ทุกการออกแบบและพัฒนามีข้อมูลรองรับอย่างมีเหตุผล</p>
         </div>
       </div>
@@ -413,7 +416,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img src="../demo/assets/images/team/team-friend-e.jpg" class="rounded-4 w-100 mb-3" alt="Anut Hlikia">
+          <img src="demo/assets/images/team/team-friend-e.jpg" class="rounded-4 w-100 mb-3" alt="Anut Hlikia">
           <p>ผู้จัดการข้อมูลและเอกสารของทีม ดูแลความต่อเนื่องของงานและการสื่อสารภายในกลุ่ม รับผิดชอบการจัดทำรายงานและตรวจสอบรายละเอียดของการนำเสนอให้ครบถ้วน พร้อมช่วยสนับสนุนในด้านคอนเทนต์และงานออกแบบ</p>
         </div>
       </div>
