@@ -88,7 +88,6 @@
           <h1 class="mb-3">7-11 Mockup — <span class="text-success">Product Filter & Checkout</span></h1>
           <p class="text-muted mb-4">ต้นแบบทำงานได้จริง (เพื่อการศึกษา) จากโจทย์วิชา — ค้นหา/ฟิลเตอร์/ตะกร้า/เช็คเอาต์ พร้อมเชื่อมต่อ API หรือระบบหลังบ้านได้ในขั้นต่อไป</p>
           <div class="d-flex gap-2">
-            <!-- ใช้ ./ ชี้ชัดว่า relative -->
             <a class="btn btn-brand btn-lg" href="./demo/index.html">
               <i class="bi bi-play-circle me-2"></i>ทดลองการทำงานจริง
             </a>
@@ -96,7 +95,6 @@
         </div>
 
         <div class="col-lg-5 d-none d-lg-flex justify-content-end">
-          <!-- Fallback: ถ้า .png ไม่มี ให้สลับเป็น .jpg -->
           <img src="demo/assets/images/brand/7-11-logo.png"
                onerror="this.onerror=null;this.src='demo/assets/images/brand/7-11-logo.jpg';"
                alt="7-Eleven Logo" class="img-fluid"
@@ -283,8 +281,96 @@
     </div>
   </footer>
 
-  <!-- Modals (เหมือนเดิม) -->
-  <!-- ...[ตัดทอน: กล่องโมดอลทั้ง 6 อันคงโค้ดเดิมได้เลย]... -->
+  <!-- TEAM DETAIL MODALS -->
+  <div class="modal fade" id="m1" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content" style="background:#0b1220;color:#e5f2ff">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Nattawat Aumyat — Product & FE Lead</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="demo/assets/images/team/nattawat.jpg" class="rounded-4 w-100 mb-3" alt="Nattawat Aumyat">
+          <p>ดูแลการออกแบบและพัฒนาเว็บของทีม ตั้งแต่การวางโครงสร้าง UX/UI ไปจนถึงการพัฒนา Prototype เพื่อใช้ในการนำเสนอจริง มีบทบาทในการเชื่อมต่อแนวคิดจากทุกฝ่ายให้กลายเป็นรูปแบบที่ใช้งานได้จริง สื่อสารไอเดียของทีมออกมาอย่างชัดเจนและเป็นระบบ</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="m2" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content" style="background:#0b1220;color:#e5f2ff">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Kongpop Suksap — UI/UX Designer</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="demo/assets/images/team/team-friend-a.jpg" class="rounded-4 w-100 mb-3" alt="Kongpop Suksap">
+          <p>ผู้ออกแบบประสบการณ์ผู้ใช้และโครงสร้างอินเทอร์เฟซที่สะท้อนแนวคิดของโปรเจกต์ให้เข้าใจง่าย เป็นผู้สร้างสมดุลระหว่างความสวยงามกับการใช้งานจริง ช่วยให้ภาพรวมของผลิตภัณฑ์มีทั้งอัตลักษณ์และความเป็นมืออาชีพ</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="m3" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content" style="background:#0b1220;color:#e5f2ff">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Sanucha Sondech — Project Strategist & System Planner</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="demo/assets/images/team/team-friend-b.jpg" class="rounded-4 w-100 mb-3" alt="Sanucha Sondech">
+          <p>ผู้วางแผนและขับเคลื่อนการดำเนินงานของทีม ตั้งแต่การจัดลำดับงาน วางโครงเรื่อง จนถึงการออกแบบแนวทางนำเสนอให้สอดคล้องกับเป้าหมายโครงงาน มีทักษะด้านการจัดการและความเข้าใจเชิงเทคนิคที่ช่วยให้ทุกส่วนทำงานได้อย่างราบรื่นและเป็นระบบ</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="m4" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content" style="background:#0b1220;color:#e5f2ff">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Thanachaporn Chuaynak — Backend Engineer</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="demo/assets/images/team/team-friend-c.jpg" class="rounded-4 w-100 mb-3" alt="Thanachaporn Chuaynak">
+          <p>ผู้ดูแลระบบฝั่งหลังบ้านและจัดการโครงสร้างข้อมูลให้รองรับการทำงานของเว็บได้เต็มประสิทธิภาพ คอยสนับสนุนทุกฝ่ายในเชิงเทคนิคและช่วยเชื่อมต่อองค์ประกอบทั้งหมดให้สมบูรณ์ในระดับระบบจริง</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="m5" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content" style="background:#0b1220;color:#e5f2ff">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Kasidate Kookid — Data / QA</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="demo/assets/images/team/team-friend-d.jpg" class="rounded-4 w-100 mb-3" alt="Kasidate Kookid">
+          <p>ผู้วิเคราะห์ข้อมูลและค้นหา insight ที่ทำให้ทีมเข้าใจปัญหาของผู้ใช้จริง เป็นผู้นำด้านการวิจัยและตรวจสอบคุณภาพระบบ เพื่อให้ทุกการออกแบบและพัฒนามีข้อมูลรองรับอย่างมีเหตุผล</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="m6" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content" style="background:#0b1220;color:#e5f2ff">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Anut Hlikia — Project Coordinator</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="demo/assets/images/team/team-friend-e.jpg" class="rounded-4 w-100 mb-3" alt="Anut Hlikia">
+          <p>ผู้จัดการข้อมูลและเอกสารของทีม ดูแลความต่อเนื่องของงานและการสื่อสารภายในกลุ่ม รับผิดชอบการจัดทำรายงานและตรวจสอบรายละเอียดของการนำเสนอให้ครบถ้วน พร้อมช่วยสนับสนุนในด้านคอนเทนต์และงานออกแบบ</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     // active nav
