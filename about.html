@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>เกี่ยวกับเรา — 7-11 Mockup</title>
+  <base href="./">
+
+  <!-- Libs -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* วางไว้ต่อท้าย <style> เดิมได้เลย */
+.team-grid .flip-card{ 
+  height: 480px;                 /* ปรับตามชอบ: 420–520px ก็ได้ */
+}
+.flip-inner,
+.flip-face{
+  height: 100%;
+}
+
+    :root{
+      /* ==== Theme: Green + Teal ==== */
+      --brand:#1BA548; --accent:#12B8A6;
+      --ink:#e5f2ff; --muted:#9fb3c8;
+      --bg:#0b0f14; --card:#0f1720; --border:#1f2a37;
+
+      /* Type scale */
+      --h1:clamp(36px,4.5vw,56px); --h2:clamp(28px,3.2vw,40px);
+      --h3:clamp(20px,2.4vw,26px); --body:clamp(15px,1.6vw,18px);
+
+      /* Motion / radius */
+      --shadow-soft:0 10px 28px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.02) inset;
+      --radius:16px; --radius-lg:24px; --ease:cubic-bezier(.2,.7,.2,1);
+    }
+
+    html{scroll-behavior:smooth}
+    body{
+      font-family:"Poppins",-apple-system,Segoe UI,Roboto,"Noto Sans Thai",sans-serif;
+      color:var(--ink); background:var(--bg); font-size:var(--body);
+      position:relative; overflow-x:hidden;
+    }
+
+    /* ===== Global Matrix Grid Glow Background ===== */
+    .bg-matrix{
+      position:fixed; inset:0; z-index:-3; pointer-events:none; opacity:.9;
+      background:
+        radial-gradient(40% 30% at 10% 0%, rgba(27,165,72,.25), transparent 60%),
+        radial-gradient(35% 30% at 90% 5%, rgba(18,184,166,.22), transparent 60%),
+        linear-gradient(180deg, rgba(27,165,72,.08), transparent 40%);
+      mix-blend-mode:screen;
+      animation:bgFloat 22s ease-in-out infinite alternate;
+    }
+    .bg-grid{
+      position:fixed; inset:-200vh -200vw; z-index:-2; pointer-events:none;
+      background:
+        repeating-linear-gradient(0deg, rgba(34,197,94,.08) 0 1px, transparent 1px 56px),
+        repeating-linear-gradient(90deg, rgba(34,197,94,.08) 0 1px, transparent 1px 56px);
+      filter:drop-shadow(0 0 10px rgba(34,197,94,.25));
+      animation:gridDrift 40s linear infinite;
+    }
+    @keyframes bgFloat{0%{transform:translateY(0)}100%{transform:translateY(-18px)}}
+    @keyframes gridDrift{0%{transform:translate3d(0,0,0) rotate(0)}100%{transform:translate3d(-180px,-120px,0) rotate(.5deg)}}
+
+    /* Navbar */
+    .navbar{background:rgba(15,23,32,.55); backdrop-filter:blur(8px)}
+    .brand-pill{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:10px;background:rgba(27,165,72,.12);color:#9ff3b4;border:1px solid rgba(134,239,172,.25);font-weight:600;font-size:14px}
+    .brand-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;opacity:.9}
+    .back-pill{position:absolute;right:16px;top:16px}
+
+    /* Buttons / Cards */
+    .btn-brand{background:var(--brand);border:none;color:#00160b;transition:transform .18s var(--ease), box-shadow .18s var(--ease)}
+    .btn-brand:hover{filter:brightness(1.06);color:#00160b;box-shadow:0 6px 18px rgba(27,165,72,.35)}
+    .btn-outline-success:hover{box-shadow:0 6px 18px rgba(27,165,72,.25)}
+    .card{background:var(--card);border:1px solid var(--border);color:#dbeafe;border-radius:var(--radius);box-shadow:var(--shadow-soft);transition:transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease)}
+    .card.hoverable:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:rgba(27,165,72,.35)}
+    .text-muted{color:var(--muted)!important}
+
+    /* Sections + animated divider */
+    .section{padding:92px 0;position:relative}
+    .section:before{
+      content:"";position:absolute;left:0;right:0;top:-1px;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(27,165,72,0) 15%, rgba(27,165,72,.35) 50%, rgba(27,165,72,0) 85%,transparent);
+      background-size:300% 100%; animation:morphLine 8s linear infinite;
+    }
+    @keyframes morphLine{ 0%{background-position:0% 0} 100%{background-position:300% 0} }
+
+    /* HERO */
+    .hero{position:relative;padding:108px 0 42px;overflow:hidden;isolation:isolate}
+    .hero .skew-note{transform:skewY(-2deg);background:linear-gradient(180deg, rgba(27,165,72,.06), rgba(15,23,32,.9));border:1px solid var(--border);border-radius:20px;padding:18px 22px;max-width:820px}
+    h1{font-size:var(--h1)} h2{font-size:var(--h2)} h3{font-size:var(--h3)}
+
+    /* === Team: Flip/Reveal Cards === */
+    .team-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:20px;
+    }
+    @media (max-width: 992px){ .team-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 576px){ .team-grid{ grid-template-columns:1fr; } }
+
+    .flip-card{ perspective:1000px; }
+    .flip-inner{
+      position:relative; width:100%; height:100%;
+      transform-style:preserve-3d;
+      transition: transform .6s var(--ease), box-shadow .18s var(--ease);
+    }
+    .flip-card:hover .flip-inner{ transform: rotateY(180deg); }
+    .flip-card.flipped .flip-inner{ transform: rotateY(180deg); } /* mobile/keyboard */
+
+    .flip-face{
+      position:absolute; inset:0;
+      backface-visibility:hidden; -webkit-backface-visibility:hidden;
+      border-radius:var(--radius);
+      overflow:hidden; display:flex; flex-direction:column;
+      background:var(--card); border:1px solid var(--border); color:#dbeafe;
+      box-shadow:var(--shadow-soft);
+    }
+
+    /* FRONT */
+    .flip-front .media{ position:relative; }
+    .flip-front img{ width:100%; aspect-ratio:1/1; object-fit:cover; border-bottom:1px solid var(--border); }
+    .flip-front .gh-chip{
+      position:absolute; right:10px; bottom:10px; z-index:2;
+      display:inline-flex; align-items:center; justify-content:center;
+      width:40px; height:40px; border-radius:10px;
+      background:rgba(11,17,24,.75); border:1px solid rgba(134,239,172,.25);
+      color:#dbeafe; backdrop-filter:blur(6px); transition:.18s;
+    }
+    .flip-front .gh-chip:hover{ transform:translateY(-1px); background:rgba(27,165,72,.18); border-color:rgba(27,165,72,.45); }
+    .flip-front .meta{ padding:14px 16px; }
+
+    /* BACK */
+    .flip-back{
+      transform: rotateY(180deg);
+      padding:18px;
+      background:linear-gradient(180deg, rgba(27,165,72,.06), rgba(15,23,32,.92));
+    }
+    .flip-back .tag{ display:inline-flex; gap:8px; align-items:center; padding:6px 10px;
+      border:1px solid var(--border); border-radius:12px; margin-bottom:10px; }
+    .flip-back .actions{ margin-top:auto; display:flex; gap:8px; }
+    .flip-back .actions .btn{ flex:1; }
+
+    /* Values icon pill */
+    .icon-pill{width:52px;height:52px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(180deg, rgba(27,165,72,.12), rgba(18,184,166,.10));color:var(--brand)}
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .hero .skew-note{transform:none}
+      .bg-grid,.bg-matrix{animation:none!important}
+      .flip-card:hover .flip-inner, .flip-card.flipped .flip-inner{ transform:none!important; }
+      .flip-back{ position:relative; transform:none; display:none; }
+      .flip-card.flipped .flip-back{ display:flex; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-matrix" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark fixed-top">
+    <div class="container-xxl position-relative">
+      <a class="navbar-brand" href="index.html#home" aria-label="Prototype">
+        <span class="brand-pill"><span class="brand-dot"></span> Prototype</span>
+      </a>
+      <a class="btn btn-outline-success btn-sm back-pill" href="index.html#home">← กลับหน้าแรก</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container-xxl">
+      <h1 class="mb-2">เกี่ยวกับเรา</h1>
+      <p class="text-muted">จากห้องเรียนสู่ประสบการณ์จริง — เราออกแบบประสบการณ์ซื้อที่สั้นที่สุด แต่ครบที่สุด</p>
+
+      <div class="skew-note mt-4">
+        <strong>คอนเซ็ปต์ทีม (โทนวิชาการเบา ๆ)</strong><br>
+        ต้นแบบนี้ถูกสร้างจากโจทย์วิชาจริง แต่ยกระดับด้วยมาตรฐานโปรดักต์ — โค้ดพร้อมต่อ API, โครงสร้างโมดูลาร์,
+        และรองรับมือถือเต็มรูปแบบ เราเชื่อว่าการออกแบบที่ดีคือ “การตัดสินใจที่ดีของลูกค้า”:
+        ฟิลเตอร์ไว ตะกร้าฉลาด และเช็คเอาต์ที่สั้นที่สุด
+      </div>
+    </div>
+  </header>
+
+  <!-- TEAM: Flip/Reveal -->
+  <section class="section" id="about-team">
+    <div class="container-xxl">
+      <h2 class="mb-2">ทีมงาน</h2>
+      <p class="text-muted mb-4">6 คน 6 บทบาท — พลิกการ์ดเพื่อดูสรุปสกิลและสิ่งที่ชำนาญ</p>
+
+      <div class="team-grid">
+        <!-- 1. Nattawat -->
+        <div class="flip-card card hoverable">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="media">
+                <img src="demo/assets/images/team/nattawat.jpg"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/nattawat.png'" alt="Nattawat">
+                <a class="gh-chip" href="https://github.com/luioluil" target="_blank" rel="noopener" aria-label="Open GitHub">
+                  <i class="bi bi-github"></i>
+                </a>
+              </div>
+              <div class="meta">
+                <div class="fw-semibold">Nattawat Aumyat</div>
+                <div class="text-muted small">Product & Frontend Lead</div>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tag"><i class="bi bi-boxes"></i><span>Product • FE • Motion</span></span>
+              <div class="small text-muted mb-2">
+                ออกแบบ flow การซื้อให้สั้นที่สุด: ฟิลเตอร์ไว ตะกร้าฉลาด เช็คเอาต์ 3 สเต็ป
+                โค้ด FE โมดูลาร์ พร้อมต่อ API
+              </div>
+              <ul class="small text-muted mb-3" style="padding-left:18px">
+                <li>Design → Build → Present</li>
+                <li>Performance & A11y เบื้องต้น</li>
+              </ul>
+              <div class="actions">
+                <a class="btn btn-outline-success btn-sm" href="https://github.com/luioluil" target="_blank" rel="noopener">
+                  <i class="bi bi-github me-1"></i> ดู GitHub
+                </a>
+                <button class="btn btn-brand btn-sm team-close" type="button">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Kongpop -->
+        <div class="flip-card card hoverable">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="media">
+                <img src="demo/assets/images/team/team-friend-a.jpg"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-a.png'" alt="Kongpop">
+                <a class="gh-chip" href="https://github.com/kongpop2238/" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="meta">
+                <div class="fw-semibold">Kongpop Suksap</div>
+                <div class="text-muted small">UI/UX Designer</div>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tag"><i class="bi bi-brush"></i><span>UI System • Prototype</span></span>
+              <div class="small text-muted mb-2">จัดระบบคอมโพเนนต์และไกด์ไลน์การใช้งานให้สม่ำเสมอ อ่านง่าย ใช้ง่าย</div>
+              <ul class="small text-muted mb-3" style="padding-left:18px">
+                <li>Wireframe → Hi-fi</li>
+                <li>Micro-copy กระชับ</li>
+              </ul>
+              <div class="actions">
+                <a class="btn btn-outline-success btn-sm" href="https://github.com/kongpop2238/" target="_blank" rel="noopener"><i class="bi bi-github me-1"></i>GitHub</a>
+                <button class="btn btn-brand btn-sm team-close" type="button">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Sanucha -->
+        <div class="flip-card card hoverable">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="media">
+                <img src="demo/assets/images/team/team-friend-b.jpg"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-b.png'" alt="Sanucha">
+                <a class="gh-chip" href="https://github.com/SanuchaSondech" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="meta">
+                <div class="fw-semibold">Sanucha Sondech</div>
+                <div class="text-muted small">Project Strategist & System Planner</div>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tag"><i class="bi bi-diagram-3"></i><span>Scope • Roadmap</span></span>
+              <div class="small text-muted mb-2">จับโจทย์ธุรกิจเป็นงานระบบ กำหนด Roadmap และเชื่อมฝั่ง Dev/Design</div>
+              <ul class="small text-muted mb-3" style="padding-left:18px">
+                <li>Use-case Mapping</li>
+                <li>QA เบื้องต้น</li>
+              </ul>
+              <div class="actions">
+                <a class="btn btn-outline-success btn-sm" href="https://github.com/SanuchaSondech" target="_blank" rel="noopener"><i class="bi bi-github me-1"></i>GitHub</a>
+                <button class="btn btn-brand btn-sm team-close" type="button">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Thanachaporn -->
+        <div class="flip-card card hoverable">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="media">
+                <img src="demo/assets/images/team/team-friend-c.jpg"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-c.png'" alt="Thanachaporn">
+                <a class="gh-chip" href="https://github.com/thanachapornchuaynak" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="meta">
+                <div class="fw-semibold">Thanachaporn Chuaynak</div>
+                <div class="text-muted small">Backend Engineer & Technical Support</div>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tag"><i class="bi bi-server"></i><span>API • Integration</span></span>
+              <div class="small text-muted mb-2">ร้อย API สินค้า/ชำระเงิน/จัดส่ง และออกแบบสคีมาข้อมูลให้เชื่อมง่าย</div>
+              <ul class="small text-muted mb-3" style="padding-left:18px">
+                <li>REST/JSON Mapping</li>
+                <li>Auth/Validation เบื้องต้น</li>
+              </ul>
+              <div class="actions">
+                <a class="btn btn-outline-success btn-sm" href="https://github.com/thanachapornchuaynak" target="_blank" rel="noopener"><i class="bi bi-github me-1"></i>GitHub</a>
+                <button class="btn btn-brand btn-sm team-close" type="button">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Kasidate -->
+        <div class="flip-card card hoverable">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="media">
+                <img src="demo/assets/images/team/team-friend-d.jpg"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-d.png'" alt="Kasidate">
+                <a class="gh-chip" href="https://github.com/kasidate-kookid" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="meta">
+                <div class="fw-semibold">Kasidate Kookid</div>
+                <div class="text-muted small">Data Analyst & Research Lead</div>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tag"><i class="bi bi-graph-up"></i><span>Data • Insight</span></span>
+              <div class="small text-muted mb-2">วิเคราะห์พฤติกรรมการค้นหา/เลือกซื้อ เพื่อปรับฟิลเตอร์และแนะนำสินค้า</div>
+              <ul class="small text-muted mb-3" style="padding-left:18px">
+                <li>Basic Analytics</li>
+                <li>Metric คอนเวอร์ชัน</li>
+              </ul>
+              <div class="actions">
+                <a class="btn btn-outline-success btn-sm" href="https://github.com/kasidate-kookid" target="_blank" rel="noopener"><i class="bi bi-github me-1"></i>GitHub</a>
+                <button class="btn btn-brand btn-sm team-close" type="button">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Anut -->
+        <div class="flip-card card hoverable">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="media">
+                <img src="demo/assets/images/team/team-friend-e.jpg"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-e.png'" alt="Anut">
+                <a class="gh-chip" href="https://github.com/AnutTonkla/" target="_blank" rel="noopener"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="meta">
+                <div class="fw-semibold">Anut Hlikia</div>
+                <div class="text-muted small">Project Coordinator & Documentation Lead</div>
+              </div>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="tag"><i class="bi bi-journal-text"></i><span>PM • Docs</span></span>
+              <div class="small text-muted mb-2">ประสานงาน สรุปประเด็น ประกอบเอกสาร/เดโมให้พร้อมพรีเซนต์</div>
+              <ul class="small text-muted mb-3" style="padding-left:18px">
+                <li>Checklist/Report</li>
+                <li>Brief & Handover</li>
+              </ul>
+              <div class="actions">
+                <a class="btn btn-outline-success btn-sm" href="https://github.com/AnutTonkla/" target="_blank" rel="noopener"><i class="bi bi-github me-1"></i>GitHub</a>
+                <button class="btn btn-brand btn-sm team-close" type="button">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.team-grid -->
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="section" id="about-values">
+    <div class="container-xxl">
+      <h2 class="mb-4">แนวคิดที่ยึดถือ</h2>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="card p-4 hoverable h-100">
+            <div class="icon-pill mb-3"><i class="bi bi-lightning-charge"></i></div>
+            <div class="fw-semibold mb-1">Speed-to-Checkout</div>
+            <div class="text-muted small">ฟิลเตอร์ไว ตะกร้าฉลาด เช็คเอาต์สามสเต็ป — ทางลัดสู่ “ซื้อสำเร็จ”</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card p-4 hoverable h-100">
+            <div class="icon-pill mb-3"><i class="bi bi-diagram-3"></i></div>
+            <div class="fw-semibold mb-1">Practical Integrations</div>
+            <div class="text-muted small">สคีมาพร้อมต่อ API (สินค้า/ชำระเงิน/โลจิสติกส์) ในชั้นถัดไป</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="card p-4 hoverable h-100">
+            <div class="icon-pill mb-3"><i class="bi bi-phone"></i></div>
+            <div class="fw-semibold mb-1">Mobile First</div>
+            <div class="text-muted small">ออกแบบมือถือเป็นอันดับแรก ทุกการแตะมีที่มาและเหตุผล</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container-xxl">
+      <div class="card p-4 p-md-5 hoverable d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+        <div class="mb-3 mb-md-0">
+          <h3 class="mb-1">อยากลองกับสินค้าของคุณไหม?</h3>
+          <div class="text-muted">กลับไปหน้าหลักเพื่อดูเดโมและรายละเอียด</div>
+        </div>
+        <a class="btn btn-brand btn-lg" href="index.html#contact"><i class="bi bi-box-arrow-up-right me-2"></i>ไปที่เดโม</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-4" style="border-top:1px solid var(--border);color:#9fb3c8">
+    <div class="container-xxl d-flex justify-content-between flex-wrap gap-2">
+      <div>© <span id="y"></span> Product Filter & Checkout (Education Mockup)</div>
+      <div class="small">Bootstrap 5 • Coverflow Team</div>
+    </div>
+  </footer>
+
+  <script>
+    // year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Flip interactions: click/tap + keyboard + click outside
+    (() => {
+      const scope = document.getElementById('about-team');
+      const cards = scope.querySelectorAll('.flip-card');
+
+      cards.forEach(card => {
+        card.setAttribute('tabindex','0'); // focusable
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.actions') || e.target.closest('a')) return;
+          card.classList.toggle('flipped');
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); card.classList.toggle('flipped');
+          }
+          if (e.key === 'Escape') { card.classList.remove('flipped'); }
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#about-team .flip-card')) {
+          cards.forEach(c => c.classList.remove('flipped'));
+        }
+      });
+
+      scope.querySelectorAll('.team-close').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          btn.closest('.flip-card')?.classList.remove('flipped');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
