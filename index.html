@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>7-11 Mockup — Product Filter & Checkout</title>
+
+  <base href="./">
+
+  <!-- Speed hints -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3" crossorigin>
+
+  <!-- Libs -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* ==== Theme: Green + Teal ==== */
+      --brand:#1BA548;           /* green */
+      --accent:#12B8A6;          /* teal */
+      --ink:#e5f2ff; --muted:#9fb3c8;
+      --bg:#0b0f14; --card:#0f1720; --border:#1f2a37;
+
+      /* Type scale */
+      --h1:clamp(36px,4.5vw,56px); --h2:clamp(28px,3.2vw,40px);
+      --h3:clamp(20px,2.4vw,26px); --body:clamp(15px,1.6vw,18px);
+
+      /* Motion */
+      --shadow-soft:0 10px 28px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.02) inset;
+      --radius:16px; --radius-lg:24px; --ease:cubic-bezier(.2,.7,.2,1);
+    }
+
+    html{scroll-behavior:smooth}
+    body{
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans Thai",sans-serif;
+      color:var(--ink);background:var(--bg);font-size:var(--body);
+      position:relative; overflow-x:hidden;
+    }
+    :where(section,[id]){ scroll-margin-top: 84px; } /* กัน anchor โดนทับ */
+
+    /* ===== Global Matrix Grid Glow Background ===== */
+    .bg-matrix{
+      position:fixed; inset:0; z-index:-3; pointer-events:none; opacity:.9;
+      background:
+        radial-gradient(40% 30% at 10% 0%, rgba(27,165,72,.25), transparent 60%),
+        radial-gradient(35% 30% at 90% 5%, rgba(18,184,166,.22), transparent 60%),
+        linear-gradient(180deg, rgba(27,165,72,.08), transparent 40%);
+      mix-blend-mode:screen;
+      animation:bgFloat 22s ease-in-out infinite alternate;
+    }
+    .bg-grid{
+      position:fixed; inset:-200vh -200vw; z-index:-2; pointer-events:none;
+      background:
+        repeating-linear-gradient(0deg, rgba(34,197,94,.08) 0 1px, transparent 1px 56px),
+        repeating-linear-gradient(90deg, rgba(34,197,94,.08) 0 1px, transparent 1px 56px);
+      filter:drop-shadow(0 0 10px rgba(34,197,94,.25));
+      animation:gridDrift 40s linear infinite;
+    }
+    @keyframes bgFloat{0%{transform:translateY(0)}100%{transform:translateY(-18px)}}
+    @keyframes gridDrift{0%{transform:translate3d(0,0,0) rotate(0deg)}100%{transform:translate3d(-180px,-120px,0) rotate(.5deg)}}
+
+    h1{font-size:var(--h1)} h2{font-size:var(--h2)} h3,h4,h5{font-size:var(--h3)}
+    a{text-decoration:none}
+    .text-muted{color:var(--muted)!important}
+
+    /* ===== Navbar ===== */
+    .navbar{background:rgba(15,23,32,.55);backdrop-filter:blur(8px)}
+    .navbar .nav-link{
+      color:#cfe8ff; position:relative; transition:color .18s var(--ease), transform .18s var(--ease), background .18s var(--ease);
+      border-radius:12px; padding:.35rem .66rem;
+    }
+    .navbar .nav-link::after{
+      content:""; position:absolute; left:50%; bottom:-6px; width:0; height:2px;
+      background:linear-gradient(90deg, var(--brand), var(--accent));
+      border-radius:2px; transition:all .25s var(--ease);
+    }
+    .navbar .nav-link:hover{color:#fff; transform:translateY(-1px)}
+    .navbar .nav-link:hover::after{left:0;width:100%}
+    .navbar .nav-link.active{
+      color:#fff; background:rgba(27,165,72,.18);
+      box-shadow:0 0 0 1px rgba(27,165,72,.35) inset;
+    }
+    .navbar-nav{gap:.5rem}
+    .navbar .navbar-brand{padding:0}
+    .brand-pill{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-radius:10px;background:rgba(27,165,72,.12);color:#9ff3b4;border:1px solid rgba(134,239,172,.25);font-weight:600;font-size:14px}
+    .brand-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;opacity:.9}
+
+    /* Buttons */
+    .btn-brand{background:var(--brand);border:none;color:#00160b;transition:transform .18s var(--ease), box-shadow .18s var(--ease)}
+    .btn-brand:hover{filter:brightness(1.06);color:#00160b;box-shadow:0 6px 18px rgba(27,165,72,.35)}
+    .btn-outline-success{transition:transform .18s var(--ease), box-shadow .18s var(--ease)}
+    .btn-outline-success:hover{box-shadow:0 6px 18px rgba(27,165,72,.25)}
+    .btn-magnetic{position:relative;will-change:transform}
+
+    /* HERO */
+    .hero{position:relative;padding:108px 0 80px;overflow:hidden;isolation:isolate}
+    .hero::after{
+      content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+      background:
+        radial-gradient(3px 3px at 10% 20%, rgba(255,255,255,.25), transparent 60%),
+        radial-gradient(2px 2px at 30% 5%, rgba(146,206,255,.25), transparent 60%),
+        radial-gradient(2px 2px at 65% 18%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(3px 3px at 80% 8%, rgba(146,206,255,.22), transparent 60%),
+        radial-gradient(2px 2px at 55% 28%, rgba(255,255,255,.2), transparent 60%);
+      animation:stars 14s linear infinite
+    }
+    @keyframes stars{
+      from{background-position:0 0, 0 0, 0 0, 0 0, 0 0}
+      to  {background-position:200px 120px, -160px 100px, 140px 160px, -220px 140px, 120px 220px}
+    }
+
+    /* Sections + animated divider */
+    .section{padding:92px 0;position:relative}
+    .section:before{
+      content:"";position:absolute;left:0;right:0;top:-1px;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(27,165,72,0) 15%, rgba(27,165,72,.35) 50%, rgba(27,165,72,0) 85%,transparent);
+      background-size:300% 100%; animation:morphLine 8s linear infinite;
+    }
+    @keyframes morphLine{ 0%{background-position:0% 0} 100%{background-position:300% 0} }
+
+    /* Cards */
+    .card{background:var(--card);border:1px solid var(--border);color:#dbeafe;border-radius:var(--radius);box-shadow:var(--shadow-soft);transform:translateZ(0);transition:transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease)}
+    .card.hoverable:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:rgba(27,165,72,.35)}
+    .icon-pill{
+      width:52px;height:52px;display:grid;place-items:center;border-radius:12px;
+      background:linear-gradient(180deg, rgba(27,165,72,.12), rgba(18,184,166,.10));
+      color:var(--brand)
+    }
+    .price{font-size:clamp(30px,3.2vw,40px);font-weight:700}
+
+    /* Feature hint always visible + selected highlight */
+    .feature-btn{ cursor:pointer; position:relative; }
+    .feature-hint{ opacity:.9; transform:none; } /* โชว์ตลอด */
+    .feature-btn .icon-pill{ transition:transform .18s var(--ease); }
+    .feature-btn:where(:hover,:focus-visible) .icon-pill{ transform:scale(1.06); }
+    .feature-btn.selected{
+      outline:2px solid rgba(27,165,72,.75);
+      box-shadow:0 0 0 6px rgba(27,165,72,.12), 0 16px 40px rgba(0,0,0,.45);
+      border-color: rgba(27,165,72,.45);
+    }
+    .feature-btn.selected .icon-pill{ transform:scale(1.08); }
+
+    /* Stagger reveal */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease), transform .5s var(--ease)}
+    .reveal.in{opacity:1;transform:none}
+
+    /* Tilt cards */
+    .tilt{transform-style:preserve-3d;perspective:700px; position:relative; overflow:hidden}
+    .tilt:hover .tilt-i{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(6px)}
+    .tilt::before{
+      content:""; position:absolute; inset:-120% -40% auto -40%; height:220%;
+      background:linear-gradient(120deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      transform:translateY(-30%) rotate(12deg); transition:transform .5s var(--ease);
+      pointer-events:none;
+    }
+    .tilt:hover::before{ transform:translateY(-10%) rotate(12deg) }
+
+    /* Team Swiper */
+    .team-swiper{padding:8px 8px 56px}
+    .swiper-slide{height:auto}
+    .member-card .media-wrap{position:relative}
+    .member-card .media-wrap img{aspect-ratio:1/1;object-fit:cover;width:100%;border-radius:.75rem}
+    .gh-chip{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:rgba(11,17,24,.75);border:1px solid rgba(134,239,172,.25);color:#dbeafe;backdrop-filter:blur(6px);transition:.18s;z-index:2}
+    .gh-chip:hover{transform:translateY(-1px);background:rgba(27,165,72,.18);border-color:rgba(27,165,72,.45)}
+    .swiper-button-prev, .swiper-button-next{
+      color:#cfe8ff; width:42px; height:42px; border-radius:12px;
+      background:rgba(15,23,32,.55); border:1px solid #223042; backdrop-filter:blur(6px);
+    }
+    .swiper-button-prev:after, .swiper-button-next:after{font-size:18px}
+    .swiper-pagination-bullet{background:#7fb9ff; opacity:.5}
+    .swiper-pagination-bullet-active{background:#bfe1ff; opacity:1}
+
+    /* ===== Partners: Auto Marquee (logos 64px) ===== */
+    .partner-rail-wrap{position:relative; overflow:hidden; padding-left:100px;}
+    .partner-rail{
+      display:flex; gap:24px; align-items:center; width:max-content;
+      animation:marquee 32s linear infinite;
+    }
+    .partner-logo{
+      height:64px; padding:10px 14px; border-radius:14px; background:rgba(255,255,255,.03);
+      border:1px solid var(--border); display:inline-flex; align-items:center; justify-content:center;
+      transition:transform .18s var(--ease), filter .18s var(--ease), box-shadow .18s var(--ease);
+      filter:saturate(.55);
+    }
+    .partner-logo img{height:100%; width:auto; display:block}
+    .partner-logo:hover{transform:translateY(-4px) scale(1.04); filter:saturate(1); box-shadow:0 16px 30px rgba(0,0,0,.35)}
+    .partner-mask{
+      position:absolute; inset:0; pointer-events:none; z-index:2;
+      background:linear-gradient(90deg, #0b0f14, transparent 10%, transparent 90%, #0b0f14);
+      opacity:.85;
+    }
+    @keyframes marquee{
+      from{transform:translateX(0)}
+      to  {transform:translateX(-50%)}
+    }
+
+    /* ===== Testimonials (clean) ===== */
+    .testi-card{
+      background:linear-gradient(180deg, rgba(27,165,72,.06), rgba(15,23,32,.9));
+      border:1px solid var(--border); border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-soft); padding:28px;
+    }
+    .testi-avatar{
+      width:56px;height:56px;border-radius:14px;object-fit:cover;border:1px solid rgba(134,239,172,.25)
+    }
+    .testi-quote{font-size:clamp(16px,1.8vw,18px)}
+    .stars{color:#22c55e}
+
+    /* Focus ring */
+    :focus-visible{outline:2px solid #9dd6ff; outline-offset:2px; border-radius:10px}
+
+    /* ==== Sheet overlay ==== */
+    .sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:9999}
+    .sheet-backdrop.active{display:flex}
+    .sheet{background:var(--card);padding:28px;border-radius:var(--radius-lg);max-width:640px;width:92%;color:var(--ink);box-shadow:0 8px 40px rgba(0,0,0,.6);position:relative;animation:fadeIn .25s var(--ease)}
+    .sheet-close{position:absolute;top:10px;right:10px}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .hero::after,.section:before,.partner-rail{animation:none!important}
+      .reveal{opacity:1!important;transform:none!important}
+      .bg-matrix,.bg-grid{display:none!important}
+    }
+    @media (max-width: 576px){ .partner-logo{height:56px} }
+  </style>
+</head>
+<body>
+  <div class="bg-matrix" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+    <div class="container-xxl">
+      <a class="navbar-brand" href="#home" aria-label="Prototype">
+        <span class="brand-pill"><span class="brand-dot"></span> Prototype</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#features">ฟีเจอร์</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pricing">ราคา</a></li>
+          <li class="nav-item"><a class="nav-link" href="#team">ทีมงาน</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">รีวิว</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">เกี่ยวกับเรา</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">ติดต่อเรา</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container-xxl">
+      <div class="row align-items-center g-4 mb-3">
+        <div class="col-lg-7">
+          <h1 class="mb-3 split-group">
+            <span class="split-part" data-text="7-11 Mockup —"></span>
+            <span class="split-part text-success" data-text="Product Filter & Checkout"></span>
+          </h1>
+
+          <p class="text-muted mb-4 reveal">ต้นแบบทำงานได้จริง (เพื่อการศึกษา) จากโจทย์วิชา — ค้นหา/ฟิลเตอร์/ตะกร้า/เช็คเอาต์ พร้อมเชื่อมต่อ API หรือระบบหลังบ้านได้ในขั้นต่อไป</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-brand btn-lg btn-magnetic" href="./demo/index.html">
+              <i class="bi bi-play-circle me-2"></i>ทดลองการทำงานจริง
+            </a>
+            <a class="btn btn-outline-success btn-lg btn-magnetic" href="about.html">
+              <i class="bi bi-people me-2"></i>เกี่ยวกับเรา
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-5 d-none d-lg-flex justify-content-end">
+          <img id="heroLogo" src="demo/assets/images/brand/7-11-logo.png"
+               onerror="this.onerror=null;this.src='demo/assets/images/brand/7-11-logo.jpg';"
+               alt="7-Eleven Logo" class="img-fluid"
+               width="160" height="160" loading="lazy"
+               style="max-width:160px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.35)); will-change:transform">
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-12 col-md-auto reveal">
+          <a class="btn btn-outline-light w-100 btn-magnetic" href="https://github.com/luioluil/7-11mockuptest-99.9-" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-github me-2"></i>ดูโค้ดบน GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="d-lg-none text-center mt-4">
+        <img src="demo/assets/images/brand/7-11-logo.png"
+             onerror="this.onerror=null;this.src='demo/assets/images/brand/7-11-logo.jpg';"
+             alt="7-Eleven Logo"
+             width="96" height="96" loading="lazy"
+             style="max-width:96px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35));">
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="features">
+    <div class="container-xxl">
+      <div class="text-center mb-5"><h2 class="section-title split">Features</h2></div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <button class="card p-5 hoverable tilt reveal w-100 text-start feature-btn" data-key="filter" type="button">
+            <div class="tilt-i">
+              <div class="icon-pill mb-3"><i class="bi bi-funnel fs-4"></i></div>
+              <h5 class="mb-1">Smart Filter</h5>
+              <div class="feature-hint text-muted small">คลิกเพื่อดูรายละเอียด</div>
+            </div>
+          </button>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <button class="card p-5 hoverable tilt reveal w-100 text-start feature-btn" data-key="cart" type="button">
+            <div class="tilt-i">
+              <div class="icon-pill mb-3"><i class="bi bi-bag-check fs-4"></i></div>
+              <h5 class="mb-1">PDP & Intelligent Cart</h5>
+              <div class="feature-hint text-muted small">คลิกเพื่อดูรายละเอียด</div>
+            </div>
+          </button>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <button class="card p-5 hoverable tilt reveal w-100 text-start feature-btn" data-key="checkout" type="button">
+            <div class="tilt-i">
+              <div class="icon-pill mb-3"><i class="bi bi-receipt-cutoff fs-4"></i></div>
+              <h5 class="mb-1">Fast Checkout</h5>
+              <div class="feature-hint text-muted small">คลิกเพื่อดูรายละเอียด</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="container-xxl">
+      <div class="text-center mb-5"><h2 class="section-title split">Pricing</h2></div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-6 col-lg-5">
+          <div class="card p-5 hoverable reveal">
+            <div class="mb-2 text-success fw-semibold">Mockup Free</div>
+            <div class="price mb-1">ฟรี</div>
+            <div class="text-muted mb-3">Front-end Only (Prototype)</div>
+            <ul class="text-muted small mb-4">
+              <li>ดูเดโมการทำงานจริง</li>
+              <li>โค้ดพร้อมเชื่อม API/Back-end</li>
+              <li>สำหรับการศึกษา/พรีเซนต์</li>
+            </ul>
+            <a class="btn btn-outline-success w-100 btn-magnetic" href="https://github.com/luioluil/7-11mockuptest-99.9-" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-github me-2"></i>ไปที่ GitHub (ดาวน์โหลดโค้ด)
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-5">
+          <div class="card p-5 hoverable border-success reveal">
+            <div class="mb-2 text-success fw-semibold">Configured Package</div>
+            <div class="price mb-1">฿1,500</div>
+            <div class="text-muted mb-3">ครั้งเดียว</div>
+            <ul class="text-muted small mb-4">
+              <li>คอนฟิกให้ตามบริบทร้านค้า</li>
+              <li>เชื่อม API + ระบบหลังบ้าน</li>
+              <li>ทีมซัพพอร์ตพร้อม</li>
+            </ul>
+            <a class="btn btn-brand w-100 btn-magnetic" href="#contact">ขอเดโมแบบคอนฟิก</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="team">
+    <div class="container-xxl">
+      <div class="text-center mb-4"><h2 class="section-title split">ทีมงาน</h2></div>
+
+      <div class="swiper team-swiper">
+        <div class="swiper-wrapper">
+          <!-- 1 -->
+          <div class="swiper-slide">
+            <div class="card p-3 hoverable member-card h-100">
+              <div class="media-wrap mb-2">
+                <img class="w-100" alt="Nattawat" src="demo/assets/images/team/nattawat.jpg" loading="lazy" width="600" height="600"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/nattawat.png'">
+                <a class="gh-chip" href="https://github.com/luioluil" target="_blank" rel="noopener noreferrer" aria-label="Open Nattawat's GitHub"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="fw-semibold">Nattawat Aumyat</div>
+              <div class="text-muted small">Product & FE Lead</div>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="swiper-slide">
+            <div class="card p-3 hoverable member-card h-100">
+              <div class="media-wrap mb-2">
+                <img class="w-100" alt="Kongpop Suksap" src="demo/assets/images/team/team-friend-a.jpg" loading="lazy" width="600" height="600"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-a.png'">
+                <a class="gh-chip" href="https://github.com/kongpop2238/" target="_blank" rel="noopener noreferrer" aria-label="Open Kongpop's GitHub"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="fw-semibold">Kongpop Suksap</div>
+              <div class="text-muted small">UI/UX Designer</div>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="swiper-slide">
+            <div class="card p-3 hoverable member-card h-100">
+              <div class="media-wrap mb-2">
+                <img class="w-100" alt="Sanucha Sondech" src="demo/assets/images/team/team-friend-b.jpg" loading="lazy" width="600" height="600"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-b.png'">
+                <a class="gh-chip" href="https://github.com/SanuchaSondech" target="_blank" rel="noopener noreferrer" aria-label="Open Sanucha's GitHub"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="fw-semibold">Sanucha Sondech</div>
+              <div class="text-muted small">Project Strategist & System Planner</div>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="swiper-slide">
+            <div class="card p-3 hoverable member-card h-100">
+              <div class="media-wrap mb-2">
+                <img class="w-100" alt="Thanachaporn Chuaynak" src="demo/assets/images/team/team-friend-c.jpg" loading="lazy" width="600" height="600"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-c.png'">
+                <a class="gh-chip" href="https://github.com/thanachapornchuaynak" target="_blank" rel="noopener noreferrer" aria-label="Open Thanachaporn's GitHub"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="fw-semibold">Thanachaporn Chuaynak</div>
+              <div class="text-muted small">Backend Engineer & Technical Support</div>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="swiper-slide">
+            <div class="card p-3 hoverable member-card h-100">
+              <div class="media-wrap mb-2">
+                <img class="w-100" alt="Kasidate Kookid" src="demo/assets/images/team/team-friend-d.jpg" loading="lazy" width="600" height="600"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-d.png'">
+                <a class="gh-chip" href="https://github.com/kasidate-kookid" target="_blank" rel="noopener noreferrer" aria-label="Open Kasidate's GitHub"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="fw-semibold">Kasidate Kookid</div>
+              <div class="text-muted small">Data Analyst & Research Lead</div>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="swiper-slide">
+            <div class="card p-3 hoverable member-card h-100">
+              <div class="media-wrap mb-2">
+                <img class="w-100" alt="Anut Hlikia" src="demo/assets/images/team/team-friend-e.jpg" loading="lazy" width="600" height="600"
+                     onerror="this.onerror=null;this.src='demo/assets/images/team/team-friend-e.png'">
+                <a class="gh-chip" href="https://github.com/AnutTonkla/" target="_blank" rel="noopener noreferrer" aria-label="Open Anut's GitHub"><i class="bi bi-github"></i></a>
+              </div>
+              <div class="fw-semibold">Anut Hlikia</div>
+              <div class="text-muted small">Project Coordinator & Documentation Lead</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="swiper-button-prev" aria-label="ก่อนหน้า"></div>
+        <div class="swiper-button-next" aria-label="ถัดไป"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="testimonials">
+    <div class="container-xxl">
+      <div class="text-center mb-4"><h2 class="section-title split">ความคิดเห็นจากผู้ใช้จริง</h2></div>
+
+      <div class="swiper testi-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/zedarn.jpg" alt="Zinédine Zidane"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/zedarn.jpeg'">
+                <div>
+                  <div class="fw-semibold">Zinédine Zidane</div>
+                  <div class="small text-muted">อดีตกองกลางทีมชาติฝรั่งเศส</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="4.5 stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+              </div>
+              <p class="testi-quote mb-0">“เร็วเหมือนคอนเตอร์แอตแทคปี 2006! เว็บดีจนอยากโขกหัวทีม dev ด้วยความรัก ❤️⚽️”</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/customer-ronaldo.jpg" alt="Cristiano Ronaldo"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/customer-ronaldo.png'">
+                <div>
+                  <div class="fw-semibold">Cristiano Ronaldo</div>
+                  <div class="small text-muted">Footballer</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="5 stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <p class="testi-quote mb-0">“UI เร็วและเท่ เหมือนตอนผมยิงฟรีคิก—SIUUU!”</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/customer-ruben.jpg" alt="Rúben Amorim"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/customer-ruben.png'">
+                <div>
+                  <div class="fw-semibold">Rúben Amorim</div>
+                  <div class="small text-muted">Head Coach</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="4.5 stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+              </div>
+              <p class="testi-quote mb-0">“โครงสร้างเหมือนแท็กติก 3-5-2: ชัด กระชับ ต่อ API ได้ง่าย”</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/winter.jpg" alt="Winter"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/winter.jpeg'">
+                <div>
+                  <div class="fw-semibold">น้องหนาว</div>
+                  <div class="small text-muted">สมาชิกวงเอสป้า</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="4 stars plus">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+              </div>
+              <p class="testi-quote mb-0">“โหมดมือถือเนียน สไลด์ลื่นสุด โทนสีคือใช่”</p>
+            </div>
+          </div>
+
+          <!-- (แก้ <<div เป็น <div ทั้งหมด) -->
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/bang.jpeg" alt="บ่างกนก" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/bang.jpeg'">
+                <div>
+                  <div class="fw-semibold">บ่างกนก</div>
+                  <div class="small text-muted">นักศึกษาอาชีวะ</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="4 stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+              </div>
+              <p class="testi-quote mb-0">“ใช้งานง่าย ลื่นไหล เปิดร้านง่าย ระบบชัดเจน”</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/karina.jpg" alt="Karina" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/karina.jpg'">
+                <div>
+                  <div class="fw-semibold">คาริน่า บลู</div>
+                  <div class="small text-muted">หัวหน้าวงเอสป้า</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="4 stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+              </div>
+              <p class="testi-quote mb-0">“ใช้งานง่าย ลื่นไหล สวยงาม สวยที่สุด”</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/ning.jpg" alt="NingNing" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/ning.jpg'">
+                <div>
+                  <div class="fw-semibold">หนิงหนิง</div>
+                  <div class="small text-muted">สมาชิกวงเอสป้า</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="4 stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+              </div>
+              <p class="testi-quote mb-0">“เว็บนี้เหมือนเสียงฉันตอนฮาร์โมนี — ละมุนแต่แรง! ใส่ของในตะกร้าแล้วใจเต้นเหมือนขึ้นสเตจ 🛍️🎤”</p>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="testi-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <img class="testi-avatar" src="demo/assets/images/customers/ge.jpg" alt="Giselle" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/customers/ge.jpg'">
+                <div>
+                  <div class="fw-semibold">จีเซล</div>
+                  <div class="small text-muted">สมาชิกวงเอสป้า</div>
+                </div>
+              </div>
+              <div class="stars mb-2" aria-label="4 stars">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star"></i>
+              </div>
+              <p class="testi-quote mb-0">“ระบบลื่นจนคิดว่า Dev ใช้ Auto-Tune ทำเว็บ! แต่ลดครึ่งดาวเพราะฉันยังหาปุ่มซื้อเสื้อไม่เจอ 😂🛍️🎤”</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container-xxl">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <h2 class="section-title split">อยากลองกับสินค้าของคุณไหม?</h2>
+          <form class="row g-2" onsubmit="event.preventDefault(); alert('รับอีเมลแล้ว เดี๋ยวติดต่อกลับนะ!')">
+            <div class="col-md-8"><input class="form-control form-control-lg" type="email" placeholder="อีเมลของคุณ" required></div>
+            <div class="col-md-4 d-grid"><button class="btn btn-brand btn-lg btn-magnetic" type="submit">ส่ง</button></div>
+          </form>
+        </div>
+        <div class="col-lg-6">
+          <div class="partner-rail-wrap position-relative">
+            <div class="partner-rail">
+              <div class="partner-logo" title="N Channel">
+                <img src="demo/assets/images/brand/logome.jpg" alt="N Channel" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/brand/logome.png';">
+              </div>
+              <div class="partner-logo" title="Faculty">
+                <img src="demo/assets/images/brand/logoen.jpg" alt="Faculty Logo" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/brand/logoen.png';">
+              </div>
+              <div class="partner-logo" title="PIM Partner">
+                <img src="demo/assets/images/brand/partner-pim.png" alt="PIM Partner" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/brand/partner-pim.png';">
+              </div>
+              <div class="partner-logo" title="7-Eleven">
+                <img src="demo/assets/images/brand/7-11-logo.png" alt="7-Eleven" loading="lazy"
+                     onerror="this.onerror=null;this.src='demo/assets/images/brand/7-11-logo.png';">
+              </div>
+              <!-- duplicate set for marquee loop -->
+              <div class="partner-logo" title="N Channel">
+                <img src="demo/assets/images/brand/logome.jpg" alt="N Channel" loading="lazy">
+              </div>
+              <div class="partner-logo" title="Faculty">
+                <img src="demo/assets/images/brand/logoen.jpg" alt="Faculty Logo" loading="lazy">
+              </div>
+              <div class="partner-logo" title="PIM Partner">
+                <img src="demo/assets/images/brand/partner-pim.png" alt="PIM Partner" loading="lazy">
+              </div>
+              <div class="partner-logo" title="7-Eleven">
+                <img src="demo/assets/images/brand/7-11-logo.png" alt="7-Eleven" loading="lazy">
+              </div>
+            </div>
+            <div class="partner-mask"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="social">
+    <div class="container-xxl">
+      <div class="text-center mb-4"><h2 class="section-title split">Social & Contact</h2></div>
+      <div class="row justify-content-center g-3">
+        <div class="col-auto">
+          <a class="btn btn-outline-light btn-magnetic" href="https://www.facebook.com/pimfanpage" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook me-2"></i>Facebook</a>
+        </div>
+        <div class="col-auto">
+          <a class="btn btn-outline-light btn-magnetic" href="https://github.com/luioluil" target="_blank" rel="noopener noreferrer"><i class="bi bi-github me-2"></i>GitHub</a>
+        </div>
+        <div class="col-auto">
+          <a class="btn btn-outline-light btn-magnetic" href="http://pim.ac.th" target="_blank" rel="noopener noreferrer"><i class="bi bi-globe2 me-2"></i>PIM Website</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" style="border-top:1px solid var(--border);padding:28px 0;color:#9fb3c8">
+    <div class="container-xxl d-flex justify-content-between flex-wrap gap-2">
+      <div>© <span id="y"></span> Product Filter & Checkout (Education Mockup) — Motion MAX</div>
+      <div class="small">Bootstrap 5 • Coverflow Team</div>
+    </div>
+  </footer>
+
+  <!-- Sheet -->
+  <div class="sheet-backdrop" id="sheet">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <button class="btn btn-outline-light btn-sm sheet-close" id="sheetClose" aria-label="ปิด"><i class="bi bi-x-lg"></i></button>
+      <h4 id="sheetTitle" class="mb-3">Title</h4>
+      <div id="sheetBody" class="text-muted"></div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <script>
+  // ===== Logic รวมก้อนเดียว (BUG-RESILIENT) =====
+  window.addEventListener('DOMContentLoaded', () => {
+    // Year
+    const yEl = document.getElementById('y');
+    if (yEl) yEl.textContent = new Date().getFullYear();
+
+    // Active nav on click + scroll
+    const links = document.querySelectorAll('.navbar .nav-link');
+    links.forEach(a=>{
+      a.addEventListener('click', () => {
+        links.forEach(l=>l.classList.remove('active'));
+        a.classList.add('active');
+      });
+    });
+    const sections = Array.from(links).map(a => {
+      const href = a.getAttribute('href') || '';
+      if (!href.startsWith('#')) return null;
+      try { return document.querySelector(href); } catch { return null; }
+    }).filter(Boolean);
+    const setActive = () => {
+      const y = window.scrollY + 100;
+      sections.forEach((sec) => {
+        if (y >= sec.offsetTop && y < sec.offsetTop + sec.offsetHeight) {
+          links.forEach(l => l.classList.remove('active'));
+          const link = Array.from(links).find(l => l.getAttribute('href') === '#' + sec.id);
+          if (link) link.classList.add('active');
+        }
+      });
+    };
+    window.addEventListener('scroll', setActive, {passive:true});
+    setActive();
+
+    /* ===== Split-safe (หัวเรื่องแอนิเมชัน) ===== */
+    document.querySelectorAll('.split-group').forEach(group=>{
+      const parts = group.querySelectorAll('.split-part');
+      parts.forEach(part=>{
+        const text = part.getAttribute('data-text') || part.textContent;
+        part.textContent = '';
+        text.split(' ').forEach((w,i)=>{
+          const span = document.createElement('span');
+          span.className = 'word';
+          span.style.display = 'inline-block';
+          span.style.opacity = 0;
+          span.style.transform = 'translateY(12px)';
+          span.style.transition = `opacity .5s var(--ease) ${i*40}ms, transform .5s var(--ease) ${i*40}ms`;
+          span.innerText = w + ' ';
+          part.appendChild(span);
+        });
+      });
+      const io = new IntersectionObserver((ents)=>{
+        ents.forEach(ent=>{
+          if(ent.isIntersecting){
+            ent.target.querySelectorAll('.word').forEach(s=>{
+              requestAnimationFrame(()=>{ s.style.opacity = 1; s.style.transform = 'none'; });
+            });
+            io.unobserve(ent.target);
+          }
+        });
+      },{threshold:.3});
+      io.observe(group);
+    });
+
+    // Split for section titles (ข้อความล้วน)
+    document.querySelectorAll('.section-title.split').forEach(el => {
+      const words = el.textContent.trim().split(' ');
+      el.textContent = '';
+      words.forEach((w,i)=>{
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.style.display = 'inline-block';
+        span.style.opacity = 0;
+        span.style.transform = 'translateY(12px)';
+        span.style.transition = `opacity .5s var(--ease) ${i*40}ms, transform .5s var(--ease) ${i*40}ms`;
+        span.textContent = w + ' ';
+        el.appendChild(span);
+      });
+      const io = new IntersectionObserver((ents)=>{
+        ents.forEach(ent=>{
+          if(ent.isIntersecting){
+            ent.target.querySelectorAll('.word').forEach(s=>{
+              requestAnimationFrame(()=>{ s.style.opacity = 1; s.style.transform = 'none'; });
+            });
+            io.unobserve(ent.target);
+          }
+        });
+      },{threshold:.3});
+      io.observe(el);
+    });
+
+    // Stagger reveal
+    const ioReveal = new IntersectionObserver((ents)=>{
+      ents.forEach((ent)=>{
+        if(ent.isIntersecting){
+          setTimeout(()=>ent.target.classList.add('in'), 60);
+          ioReveal.unobserve(ent.target);
+        }
+      });
+    },{threshold:.2, rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>ioReveal.observe(el));
+
+    // Magnetic buttons
+    document.querySelectorAll('.btn-magnetic').forEach(btn=>{
+      const strength = 12;
+      btn.addEventListener('mousemove',(e)=>{
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - (r.left + r.width/2);
+        const y = e.clientY - (r.top + r.height/2);
+        btn.style.transform = `translate(${x/strength}px, ${y/strength}px)`;
+      });
+      btn.addEventListener('mouseleave',()=>{btn.style.transform='translate(0,0)'});
+    });
+
+    // Tilt cards
+    document.querySelectorAll('.tilt').forEach(card=>{
+      const inner = card.querySelector('.tilt-i');
+      const max = 6;
+      card.addEventListener('mousemove', (e)=>{
+        const r = card.getBoundingClientRect();
+        const rx = ((e.clientY - r.top)/r.height - .5) * -max;
+        const ry = ((e.clientX - r.left)/r.width - .5) *  max;
+        inner?.style.setProperty('--rx', rx+'deg');
+        inner?.style.setProperty('--ry', ry+'deg');
+      });
+      card.addEventListener('mouseleave', ()=>{ inner?.style.removeProperty('--rx'); inner?.style.removeProperty('--ry'); });
+    });
+
+    // Parallax inertia for hero logo
+    const logo = document.getElementById('heroLogo');
+    if(logo){
+      let y=0, target=0;
+      const onScroll = ()=>{ target = window.scrollY * 0.06; };
+      const raf = ()=>{ y += (target - y) * 0.08; logo.style.transform = `translateY(${y.toFixed(2)}px)`;
+                        requestAnimationFrame(raf); };
+      window.addEventListener('scroll', onScroll, {passive:true});
+      requestAnimationFrame(raf);
+    }
+
+    // Team Swiper
+    const teamSwiper = new Swiper('.team-swiper', {
+      loop:true, centeredSlides:true, slidesPerView:1.15, spaceBetween:16, speed:750,
+      effect:'coverflow', coverflowEffect:{ rotate:8, stretch:0, depth:140, modifier:1, slideShadows:false },
+      autoplay:{ delay:2200, disableOnInteraction:false, pauseOnMouseEnter:true },
+      navigation:{ nextEl:'.team-swiper .swiper-button-next', prevEl:'.team-swiper .swiper-button-prev' },
+      pagination:{ el:'.team-swiper .swiper-pagination', clickable:true },
+      breakpoints:{ 576:{ slidesPerView:1.25 }, 768:{ slidesPerView:2, spaceBetween:16 }, 1200:{ slidesPerView:3, spaceBetween:18 } },
+      lazy:{ enabled:true },
+      uniqueNavElements:true
+    });
+
+    // Testimonials Swiper
+    const testiSwiper = new Swiper('.testi-swiper', {
+      loop:true, slidesPerView:1, spaceBetween:16, speed:650,
+      autoplay:{ delay:4500, disableOnInteraction:false, pauseOnMouseEnter:true },
+      pagination:{ el:'.testi-swiper .swiper-pagination', clickable:true },
+      uniqueNavElements:true
+    });
+
+    /* ===== Feature Sheets (with highlight) ===== */
+    const SHEETS = {
+      filter: {
+        title: 'Smart Filter',
+        body: `
+          <ul class="mb-3">
+            <li>กรองตาม <strong>หมวด, โปรโมชัน, ช่วงราคา, แท็ก</strong></li>
+            <li>ค้นหา <strong>ภาษาไทยแบบเรียลไทม์</strong> (normalize/trim/ignore tone)</li>
+            <li>จดจำสถานะฟิลเตอร์ด้วย <code>URLSearchParams</code> + <code>LocalStorage</code></li>
+          </ul>
+          <p class="mb-0">เดโม่อยู่ในหน้า Demo → แถบซ้าย <em>Filters</em> • รองรับคีย์บอร์ดครบ</p>
+        `
+      },
+      cart: {
+        title: 'PDP & Intelligent Cart',
+        body: `
+          <ul class="mb-3">
+            <li>หน้าสินค้าเลือกออปชัน/จำนวน + แนะนำ <strong>2 similar</strong> + <strong>1 cross</strong></li>
+            <li>คำนวณ <strong>net ต่อหน่วย</strong> + รวมภาษี/ส่วนลดอัตโนมัติ</li>
+            <li>โครงเชื่อมต่อ API พร้อม: <code>/products/:id</code>, <code>/recommendations</code></li>
+          </ul>
+          <p class="mb-0">โค้ดตัวอย่าง mapping อยู่ในโฟลเดอร์ <code>demo/js</code></p>
+        `
+      },
+      checkout: {
+        title: 'Fast Checkout',
+        body: `
+          <ul class="mb-3">
+            <li>Flow: <strong>Cart → Address → Confirm</strong> (3 สเต็ป)</li>
+            <li>บันทึกข้อมูลซ้ำด้วย <code>LocalStorage</code> (กลับมาไม่ต้องพิมพ์ใหม่)</li>
+            <li>เตรียม Hook ต่อ <strong>Payment/Delivery</strong> จริงในชั้นถัดไป</li>
+          </ul>
+          <p class="mb-0">รองรับมือถือ 100% • มี validation เบื้องต้นครบ</p>
+        `
+      }
+    };
+
+    const sheet = document.getElementById('sheet');
+    const sheetTitle = document.getElementById('sheetTitle');
+    const sheetBody = document.getElementById('sheetBody');
+
+    let selectedBtn = null;
+
+    const openSheet = (key) => {
+      const s = SHEETS[key]; if(!s) return;
+      sheetTitle.textContent = s.title;
+      sheetBody.innerHTML = s.body;
+      sheet.classList.add('active');
+      document.documentElement.style.overflow = 'hidden';
+      history.pushState({sheet:key}, "");
+    };
+
+    const clearSelected = () => {
+      if (selectedBtn){
+        selectedBtn.classList.remove('selected');
+        selectedBtn.setAttribute('aria-pressed','false');
+        selectedBtn = null;
+      }
+    };
+
+    const closeSheet = () => {
+      sheet.classList.remove('active');
+      document.documentElement.style.overflow = '';
+      clearSelected();
+    };
+
+    document.querySelectorAll('.feature-btn').forEach(btn=>{
+      btn.setAttribute('aria-pressed','false');
+      btn.addEventListener('click', ()=>{
+        clearSelected();
+        selectedBtn = btn;
+        btn.classList.add('selected');
+        btn.setAttribute('aria-pressed','true');
+        openSheet(btn.dataset.key);
+      });
+    });
+
+    document.getElementById('sheetClose')?.addEventListener('click', closeSheet);
+    sheet.addEventListener('click', (e)=>{ if(e.target === sheet) closeSheet(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeSheet(); });
+    window.addEventListener('popstate', ()=>{ if (sheet.classList.contains('active')) closeSheet(); });
+  });
+  </script>
+</body>
+</html>
